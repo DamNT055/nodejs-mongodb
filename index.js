@@ -13,6 +13,53 @@ async function main() {
 
 main()
   .then(async (collection) => {
+    // Bulk write
+    const orderedBulk = collection.initializeOrderedBulkOp();
+    orderedBulk.insert({
+      _id: 1,
+      name: "Jonhny",
+    });
+    orderedBulk
+      .find({
+        _id: 2,
+      })
+      .updateOne({
+        $set: {
+          name: "Micheal",
+        },
+      });
+    orderedBulk
+      .find({
+        _id: 3,
+      })
+      .remove();
+    orderedBulk.execute((err, result) => {
+      // Handle error or result
+    });
+    // Unordered bulk write
+    const unorderedBulk = collection.initializeUnorderedBulkOp();
+    unorderedBulk.insert({
+      _id: 1,
+      name: "David",
+    });
+    unorderedBulk
+      .find({
+        _id: 2,
+      })
+      .updateOne({
+        $set: {
+          name: "Beckham",
+        },
+      });
+    unorderedBulk
+      .find({
+        _id: 3,
+      })
+      .deleteOne();
+    unorderedBulk.execute((err, result) => {
+      // handle error or result
+    });
+
     // Insert Document
     try {
       const insertResult = await collection.insertMany([
