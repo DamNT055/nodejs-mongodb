@@ -1,6 +1,9 @@
 import { MongoClient, MongoServerError } from "mongodb";
 const url = "mongodb://0.0.0.0:27017";
-const client = new MongoClient(url);
+const client = new MongoClient(url, {
+  retryReads: true,
+  retryWrites: true,
+});
 const dbName = "myProject";
 
 async function main() {
@@ -122,3 +125,5 @@ main()
   })
   .catch(console.error)
   .finally(() => client.close());
+
+export { main, client };
